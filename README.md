@@ -18,7 +18,7 @@ Install these if you don't have them:
 ### 2. Clone and Setup
 
 ```bash
-git clone <this-repo-url> ft-interview
+git clone https://github.com/NCarteazy/full-stack-interview.git ft-interview
 cd ft-interview
 make setup
 ```
@@ -33,9 +33,22 @@ Visit `http://localhost:5173` in your browser. You should see a confirmation pag
 
 Press `Ctrl+C` to stop the servers.
 
+### 4. Download the Challenge
+
+Download the challenge zip file from GitHub releases:
+
+```bash
+curl -L -o interview-challenge.zip https://github.com/NCarteazy/full-stack-interview/releases/download/v1.0.0/interview-challenge.zip
+```
+
+Or download it manually from: https://github.com/NCarteazy/full-stack-interview/releases
+
+You'll be given a password to unlock it later.
+
+
 ## During Your Interview
 
-You'll receive the password for the encrypted challenge file that's included in this repository.
+You'll receive the password for the encrypted challenge file.
 
 ### Merge the Challenge
 
