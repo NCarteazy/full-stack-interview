@@ -1,4 +1,4 @@
-.PHONY: help setup install-frontend install-backend install-uv dev dev-frontend dev-backend check-node merge-challenge
+.PHONY: help setup install-frontend install-backend install-uv dev dev-frontend dev-backend check-node merge-challenge finish
 
 help:
 	@echo "Available commands:"
@@ -7,6 +7,7 @@ help:
 	@echo "  make dev             - Run both frontend and backend concurrently"
 	@echo "  make dev-frontend    - Run frontend only"
 	@echo "  make dev-backend     - Run backend only"
+	@echo "  make finish          - Package completed interview for submission"
 
 check-node:
 	@echo "Checking Node.js..."
@@ -83,6 +84,8 @@ merge-challenge:
 	cp -f "$$TEMP_DIR"/DESIGN.png ./DESIGN.png 2>/dev/null || echo "  (DESIGN.png not found, skipping)"; \
 	cp -f "$$TEMP_DIR"/INTERVIEW_PROMPT.md ./INTERVIEW_PROMPT.md; \
 	rm -rf "$$TEMP_DIR"; \
+	echo "🗑️  Removing challenge zip file..."; \
+	rm -f "$$CHALLENGE_ZIP"; \
 	echo ""; \
 	echo "✅ Challenge merged successfully!"; \
 	echo ""; \
@@ -91,4 +94,32 @@ merge-challenge:
 	echo "  2. View DESIGN.png for UI design reference"; \
 	echo "  3. Run 'make dev' to start both servers"; \
 	echo "  4. Start coding!"; \
+	echo ""
+
+finish:
+	@echo "📦 Packaging completed interview for submission..."
+	@echo ""
+	@# Remove any existing challenge zip file
+	@rm -f ./interview-challenge.zip
+	@# Remove virtual environments and dependencies to reduce size
+	@echo "🗑️  Cleaning up build artifacts..."
+	@rm -rf backend/.venv backend/__pycache__ backend/routers/__pycache__
+	@rm -rf frontend/node_modules frontend/dist
+	@# Generate timestamp in MM_DD_YY format
+	@TIMESTAMP=$$(date '+%m_%d_%y'); \
+	FINISHED_ZIP="$${TIMESTAMP}_fullstack_pets.zip"; \
+	echo "📁 Creating submission package: $$FINISHED_ZIP"; \
+	zip -r "$$FINISHED_ZIP" . \
+		-x "*.git*" \
+		-x "*.DS_Store*" \
+		-x "*node_modules*" \
+		-x "*__pycache__*" \
+		-x "*.venv*" \
+		-x "*dist*" \
+		-x "interview-challenge.zip"; \
+	echo ""; \
+	echo "✅ Interview package created: $$FINISHED_ZIP"; \
+	echo ""; \
+	echo "📤 Ready for submission!"; \
+	echo "   Upload this zip file to your interviewer."; \
 	echo ""
