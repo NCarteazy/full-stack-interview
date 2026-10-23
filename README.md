@@ -1,157 +1,107 @@
-# Pet Adoption Center - Interview Challenge
+# Forethought Technologies - Interview Setup
 
-This repository contains a full-stack interview challenge that creates a setup repository with an encrypted challenge file.
+Welcome! Please complete this setup **before** your scheduled interview.
 
-## Quick Start
+## Pre-Interview Setup
 
-```bash
-./split-repo.sh        # Creates setup repo with embedded challenge
-./test-setup.sh        # Validates everything works
-./cleanup.sh           # Cleans setup repo (preserves .git)
-./release-challenge.sh # Packages and releases a new .zip of challenge contents
-```
+### 1. Prerequisites
 
-## Cross-Platform Candidate Flow
+Install these if you don't have them:
+- **Node.js** 20.19+ (an LTS version like 22 is recommended) ([Download](https://nodejs.org/))
+- **Git**
+- **uv** Python package manager:
+  - macOS / Linux:
+    ```bash
+    curl -LsSf https://astral.sh/uv/install.sh | sh
+    ```
+  - Windows (PowerShell):
+    ```powershell
+    powershell -c "irm https://astral.sh/uv/install.ps1 | iex"
+    ```
 
-All candidate-facing commands are implemented in **`manage.py`** (Python
-stdlib only), so they work natively on macOS, Linux, and Windows. The
-`makefile` is a thin shim that delegates to it for macOS/Linux users.
+  Restart your terminal after installation.
 
-```bash
-uv run python manage.py setup           # check requirements + install everything
-uv run python manage.py dev             # frontend + backend concurrently
-uv run python manage.py dev-frontend    # frontend only
-uv run python manage.py dev-backend     # backend only
-uv run python manage.py merge-challenge # extract challenge zip into the repo
-uv run python manage.py finish          # timestamped submission zip
-```
+### 2. Clone and Setup
 
-Each is also available as `make <command>` on macOS/Linux.
-
-Implementation notes:
-- `dev` runs the backend via `uv run uvicorn main:app --reload` — uvicorn's
-  own reloader manages the worker process, which restarts reliably. (The old
-  `watchfiles 'uv run main.py'` setup lost the restart signal at the `uv`
-  layer, leaving an orphaned server holding the port.)
-- `merge-challenge` extracts the encrypted zip with Python's stdlib `zipfile`
-  (ZipCrypto, produced by `zip -P` in the scripts below) — no `unzip`
-  binary needed, which never existed on stock Windows.
-- `finish` builds the submission zip with stdlib `zipfile` — no `zip`
-  binary needed.
-
-## How It Works
-
-### Setup Repository Strategy:
-
-1. **[ft-interview](https://github.com/NCarteazy/full-stack-interview)**
-   - Candidates clone and install dependencies **before** interview
-   - Contains generic boilerplate (no hints about pets)
-   - All dependencies pre-configured
-   - Challenge zip available via GitHub releases
-
-### Interview Flow:
-
-**Before Interview (Candidate does at home):**
+**macOS / Linux:**
 ```bash
 git clone https://github.com/NCarteazy/full-stack-interview.git ft-interview
 cd ft-interview
-make setup    # or: uv run python manage.py setup
-make dev      # verifies it works
-
-# Download challenge file for later
-curl -L -o interview-challenge.zip https://github.com/NCarteazy/full-stack-interview/releases/download/v1.0.0/interview-challenge.zip
+make setup
 ```
 
-**During Interview (Takes 20 seconds):**
+**Windows (or anywhere without `make`):**
+```powershell
+git clone https://github.com/NCarteazy/full-stack-interview.git ft-interview
+cd ft-interview
+uv run python manage.py setup
+```
+
+### 3. Verify Everything Works
+
+**macOS / Linux:** `make dev` — **Windows:** `uv run python manage.py dev`
+
+Visit `http://localhost:5173` in your browser. You should see a confirmation page.
+
+Press `Ctrl+C` to stop the servers.
+
+### 4. Download the Challenge
+
+Download the latest challenge zip file from GitHub releases:
+
 ```bash
-# Merge challenge with password (provided by interviewer)
+curl -L -o interview-challenge.zip https://github.com/NCarteazy/full-stack-interview/releases/download/v1.1.0/interview-challenge.zip
+```
+
+Or download it manually from: https://github.com/NCarteazy/full-stack-interview/releases
+
+You'll be given a password to unlock it later.
+
+
+## During Your Interview
+
+You'll receive the password for the encrypted challenge file.
+
+### Merge the Challenge
+
+**macOS / Linux:**
+```bash
 make merge-challenge
-# Enter password when prompted
-
-# Start coding
-make dev
-
-# When finished
-make finish   # Creates timestamped submission zip
 ```
 
-## File Organization
-
-This repo uses `.setup.` naming for setup versions:
-
-```
-workspace/
-├── manage.py                # Cross-platform task runner (the real implementation)
-├── pyproject.toml           # Root project so `uv run` works from the repo root
-├── makefile                 # Thin shim delegating to manage.py
-├── frontend/
-│   ├── src/
-│   │   ├── App.tsx          # Real: Pet adoption interface
-│   │   └── App.setup.tsx    # Setup: Generic welcome page
-│   ├── package.json
-│   ├── package-lock.json
-│   ├── eslint.config.js     # Flat config (ESLint 10)
-│   └── ...config files
-└── backend/
-    ├── models.py            # Real: Pet, Center, Application
-    ├── models.setup.py      # Setup: Generic Item, Category
-    ├── main.py              # Real: Full FastAPI with routers
-    ├── main.setup.py        # Setup: Basic health check
-    ├── database.py          # Real: Pet data seeded
-    └── database.setup.py    # Setup: Generic sample data
+**Windows:**
+```powershell
+uv run python manage.py merge-challenge
 ```
 
-Maintainer-only files (never shipped to candidates): `DESIGN.png`,
-`INTERVIEW_PROMPT.md` (these ship inside the encrypted zip),
-`design_image_prompt.txt` (prompt used to regenerate DESIGN.png), and the
-`*.sh` scripts.
+You'll be prompted for the password (provided by your interviewer).
 
-The `split-repo.sh` script copies `.setup.` files over real ones for the setup repo.
+This will extract and merge all challenge files into your setup.
 
-## Deploy to GitHub
+### Start Coding!
 
-After running `./split-repo.sh`, push the setup repo:
+**macOS / Linux:** `make dev` — **Windows:** `uv run python manage.py dev`
 
-```bash
-cd ../ft-interview
-git add . && git commit -m "Setup repository"
-git remote add origin <your-setup-repo-url>
-git push -u origin main
-```
+Read `INTERVIEW_PROMPT.md` for the full challenge description.
 
-## Available Commands
+## Troubleshooting
 
-- `setup` - Install all dependencies
-- `dev` - Run frontend + backend concurrently
-- `merge-challenge` - Extract and merge challenge files
-- `finish` - Create timestamped submission zip
+**uv not found?**
+- macOS / Linux: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+- Windows (PowerShell): `powershell -c "irm https://astral.sh/uv/install.ps1 | iex"`
+- Restart your terminal after installing.
 
-(`make <command>` on macOS/Linux, `uv run python manage.py <command>` everywhere.)
+**Node version too old?**
+Update to 20.19+ from [nodejs.org](https://nodejs.org/). You can use a node version manager like `nvm`, `fnm`, or `nvm-windows` to install multiple Node versions at once.
 
-## Release New Challenge Version
+**`make: command not found` (macOS/Linux)?**
+Use the `uv run python manage.py <command>` form instead — everything works without make.
 
-To release a new version of the interview challenge:
+**Other issues?**
+Contact your interview coordinator.
 
-```bash
-./release-challenge.sh    # Interactive script that handles everything
-```
+## Questions?
 
-This script will:
-- Prompt for the new version number
-- Update README.setup.md with the new version
-- Create the challenge zip file
-- Create a GitHub release with the zip
+If you have any issues with setup, reach out to your interview coordinator.
 
-## Cleanup (Testing)
-
-To clean the ft-interview repository while preserving .git:
-
-```bash
-./cleanup.sh    # Removes all files except .git
-```
-
-This preserves the Git repository for repeated testing of the split/merge process.
-
----
-
-**That's it!** The scripts handle everything. Just run `./split-repo.sh` and you're ready.
+Good luck! 🚀
