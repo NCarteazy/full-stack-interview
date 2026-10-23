@@ -1,9 +1,21 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-app = FastAPI(title="Interview API", version="1.0.0")
+from database import init_db
+from routers import applications, centers, pets
 
-# Enable CORS for frontend
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Initialize database on startup
+    init_db()
+    yield
+
+
+app = FastAPI(title="Pet Adoption API", lifespan=lifespan)
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -12,23 +24,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
-@app.get("/")
-def root():
-    """Root endpoint - confirms API is running"""
-    return {
-        "message": "Interview API is running",
-        "status": "ready",
-        "note": "Challenge files will be loaded during interview"
-    }
-
-
-@app.get("/health")
-def health():
-    """Health check endpoint"""
-    return {"status": "healthy"}
-
+app.include_router(pets.router)
+app.include_router(centers.router)
+app.include_router(applications.router)
 
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=3001)

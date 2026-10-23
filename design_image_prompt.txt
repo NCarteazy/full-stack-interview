@@ -1,0 +1,73 @@
+Prompt for regenerating DESIGN.png with a modern AI image model
+================================================================
+
+Background: DESIGN.png is the design reference for the pet-adoption
+interview challenge (shipped in the encrypted interview-challenge.zip —
+see split-repo.sh / release-challenge.sh). The original image came from
+an older model with garbled text; regenerate it with correct, crisp text.
+Layout and content must stay as described below.
+
+--------------------------------------------------------------------------------
+PROMPT (paste everything below into the image model)
+--------------------------------------------------------------------------------
+
+Flat, modern web app UI design mockup, "Pet Adoption Center" page.
+Clean minimal SaaS style, light gray page background (#f4f4f4), with a
+large white rounded-corner container (soft drop shadow) filling most of
+the frame. Wide 3:2 landscape aspect. All text rendered in a crisp,
+legible geometric sans-serif (like Inter or SF Pro), perfectly spelled.
+
+HEADER: A teal / turquoise (#3fc1c9) banner across the top of the white
+container with generous padding. Left-aligned bold black heading text
+exactly: "Pet Adoption Center"
+
+SEARCH BAR: Top-right, below the header, aligned with the pet grid: a
+white rounded-rectangle input field with a thin light-gray border,
+placeholder text exactly "Search...", and a small gray magnifying glass
+icon on its right side.
+
+PET GRID: A single row of 4 equal-width vertical cards below the search
+bar. Each card: white background, thin light-gray border, rounded
+corners (about 12px), subtle shadow. A rectangular pet photo fills the
+card's top edge-to-edge. Below the photo, left-aligned text lines:
+the pet's name in large bold, then the breed, the age, the size, and
+the shelter name, in smaller regular gray-black text. At the bottom of
+each card, a solid royal-blue (#1a73e8) rounded button with white text
+exactly: "Apply to Adopt"
+
+The 4 cards, in order, with photo and EXACT text:
+
+Card 1 — photo: happy young yellow Labrador puppy sitting outdoors,
+panting, tongue out.
+  Name: Belia
+  Breed: Labrador Retriever
+  Age: 2 years old
+  Size: Medium
+  Shelter: Happy Tails Shelter
+
+Card 2 — photo: tricolor beagle sitting, plain light studio background.
+  Name: Max
+  Breed: Beagle
+  Age: 1 year old
+  Size: Medium
+  Shelter: Safe Haven
+
+Card 3 — photo: brown tabby cat with green eyes lying on a light rug.
+  Name: Luna
+  Breed: Domestic Shorthair
+  Age: 3 months old
+  Size: Small
+  Shelter: Happy Tails Shelter
+
+Card 4 — photo: small fluffy all-white dog sitting on green grass,
+mouth open, happy.
+  Name: Charlie
+  Breed: Maltese
+  Age: 3 years old
+  Size: Small
+  Shelter: Safe Haven
+
+Every label and word must be spelled EXACTLY as written above — no
+misspellings, no garbled or doubled letters, no extra text, no
+watermarks, no browser chrome, no URL bar. Flat vector-clean UI
+aesthetic, realistic pet photos inside the cards.
