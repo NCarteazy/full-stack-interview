@@ -120,7 +120,9 @@ def _spawn(cmd: list[str], cwd: Path) -> subprocess.Popen:
         kwargs["creationflags"] = subprocess.CREATE_NEW_PROCESS_GROUP
     else:
         kwargs["start_new_session"] = True
-    return subprocess.Popen(cmd, cwd=cwd, **kwargs)
+    # Drop VIRTUAL_ENV so nested `uv run` picks the right project env
+    env = {k: v for k, v in os.environ.items() if k != "VIRTUAL_ENV"}
+    return subprocess.Popen(cmd, cwd=cwd, env=env, **kwargs)
 
 
 def _stop(proc: subprocess.Popen) -> None:
@@ -169,7 +171,7 @@ def _backend_cmd(uv: list[str]) -> list[str]:
 
 def cmd_dev_backend(args: argparse.Namespace) -> None:
     uv = check_uv()
-    print(f"Starting backend on {BACKEND_URL} (docs at {BACKEND_URL}/docs)...")
+    print(f"Starting backend → http://localhost:{BACKEND_PORT} (port {BACKEND_PORT}, docs at /docs)...")
     run(_backend_cmd(uv), cwd=BACKEND)
 
 
@@ -180,10 +182,12 @@ def cmd_dev_frontend(_args: argparse.Namespace) -> None:
 
 def cmd_dev(_args: argparse.Namespace) -> None:
     uv = check_uv()
-    print("Starting frontend and backend...")
-    print(f"  Frontend: {FRONTEND_URL}")
-    print(f"  Backend:  {BACKEND_URL} (docs at {BACKEND_URL}/docs)")
-    print("  Press Ctrl+C to stop both.")
+    print("Starting frontend and backend...", flush=True)
+    print("")
+    print("  ✅ Frontend → http://localhost:5173   (port 5173)", flush=True)
+    print("  ✅ Backend  → http://localhost:3001   (port 3001, docs at /docs)", flush=True)
+    print("", flush=True)
+    print("  Press Ctrl+C to stop both.", flush=True)
 
     procs = [
         _spawn([*npm_cmd(), "run", "dev"], FRONTEND),
