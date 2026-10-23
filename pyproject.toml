@@ -1,0 +1,6 @@
+[project]
+name = "fullstack-interview"
+version = "0.1.0"
+description = "Task runner for the FT full stack interview scaffold"
+requires-python = ">=3.13"
+dependencies = []
