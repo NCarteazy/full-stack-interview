@@ -262,8 +262,24 @@ def cmd_merge_challenge(args: argparse.Namespace) -> None:
         die("Zip is missing backend/routers/ — is this the right challenge file?")
 
     zip_path.unlink()
-    print(f"📁 Copied {len(merged)} files (backend, routers, docs)")
+    print(f"📁 Copied {len(merged)} files (backend, routers, docs, frontend)")
     print("🗑️  Removing challenge zip file...")
+
+    # The challenge brings its own backend dependencies (its pyproject.toml
+    # and uv.lock just replaced the setup ones) — sync the environment now
+    # so the first `make dev` starts clean.
+    if (BACKEND / "pyproject.toml").is_file():
+        print("📦 Syncing backend dependencies...")
+        uv = shutil.which("uv")
+        if uv is None:
+            print("   uv not found — they'll install automatically on the next 'make dev'.")
+        else:
+            sync = subprocess.run([uv, "sync"], cwd=BACKEND)
+            if sync.returncode != 0:
+                print(
+                    "⚠️  Dependency sync failed. Run 'uv sync' inside backend/ "
+                    "before starting the servers."
+                )
     print("")
     print("✅ Challenge merged successfully!")
     print("")

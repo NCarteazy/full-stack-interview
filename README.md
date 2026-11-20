@@ -50,7 +50,7 @@ Press `Ctrl+C` to stop the servers.
 Download the latest challenge zip file from GitHub releases:
 
 ```bash
-curl -L -o interview-challenge.zip https://github.com/NCarteazy/full-stack-interview/releases/download/v1.1.0/interview-challenge.zip
+curl -L -o interview-challenge.zip https://github.com/NCarteazy/full-stack-interview/releases/download/v1.2.0/interview-challenge.zip
 ```
 
 Or download it manually from: https://github.com/NCarteazy/full-stack-interview/releases
@@ -77,6 +77,8 @@ uv run python manage.py merge-challenge
 You'll be prompted for the password (provided by your interviewer).
 
 This will extract and merge all challenge files into your setup.
+
+The app's UI is already built — during the interview you'll connect it to the backend and add features. Your interviewer will walk you through it.
 
 ### Start Coding!
 

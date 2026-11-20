@@ -1,20 +1,32 @@
-import mongomock
+# Simple in-memory data store for the setup app.
+#
+# Deliberately storage-agnostic: the interview challenge brings its own
+# database layer (and dependencies) when it is merged during the interview.
 
-# Using mongomock for interview - no real MongoDB needed
-client = mongomock.MongoClient()
-db = client["interview_db"]
+items = {
+    1: {"id": 1, "name": "Sample Item 1", "description": "Test item"},
+    2: {"id": 2, "name": "Sample Item 2", "description": "Another test item"},
+}
 
-# Generic collections - will be populated during interview
-items_collection = db["items"]
-categories_collection = db["categories"]
+categories = {
+    1: {"id": 1, "name": "Category A"},
+    2: {"id": 2, "name": "Category B"},
+}
 
-# Seed with minimal test data
-items_collection.insert_many([
-    {"_id": 1, "name": "Sample Item 1", "description": "Test item"},
-    {"_id": 2, "name": "Sample Item 2", "description": "Another test item"},
-])
 
-categories_collection.insert_many([
-    {"_id": 1, "name": "Category A"},
-    {"_id": 2, "name": "Category B"},
-])
+def init_db():
+    """Reset the sample data."""
+    items.clear()
+    items.update(
+        {
+            1: {"id": 1, "name": "Sample Item 1", "description": "Test item"},
+            2: {"id": 2, "name": "Sample Item 2", "description": "Another test item"},
+        }
+    )
+    categories.clear()
+    categories.update(
+        {
+            1: {"id": 1, "name": "Category A"},
+            2: {"id": 2, "name": "Category B"},
+        }
+    )
