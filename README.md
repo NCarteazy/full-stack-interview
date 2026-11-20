@@ -50,7 +50,7 @@ Press `Ctrl+C` to stop the servers.
 Download the latest challenge zip file from GitHub releases:
 
 ```bash
-curl -L -o interview-challenge.zip https://github.com/NCarteazy/full-stack-interview/releases/download/v1.2.0/interview-challenge.zip
+curl -L -o interview-challenge.zip https://github.com/NCarteazy/full-stack-interview/releases/download/v1.2.1/interview-challenge.zip
 ```
 
 Or download it manually from: https://github.com/NCarteazy/full-stack-interview/releases
